@@ -2,18 +2,35 @@
 #include <stdbool.h>
 
 struct aluno {
-
     char nome[200];
     float nota1;
     float nota2;
+}strAluno[3];
+
+int comparaStrings(char nomeUm[], char nomeDois[]){
+    int i = 0;
+    while(nomeUm[i] == nomeDois[i] && nomeUm[i] != '\0' && nomeDois[i]  != '\0'){
+        i++;
+    }
+    if(nomeUm[i]== '\0' && nomeDois[i]== '\0'){
+        return 1;
+    }else{
+        return 0;
+    }
 }
-strAluno[3];
+
+void printAluno(struct aluno a){
+    printf("\nNome do aluno: %s", a.nome);
+    printf("\nNota 1 do aluno: %.2f", a.nota1);
+    printf("\nNota 2 do aluno: %.2f", a.nota2);
+}
 
 int main()
 {
     const int TAMANHO = 3;
     bool condicao = true;
-    int valor, quantidadeParaCadastro, arrayEstaCheio = 0;
+    int valor, quantidadeParaCadastro, arrayEstaCheio = 0, arrayCount = 0;
+    char buscarAlunoPorNome[200];
     
 
     while(condicao){
@@ -31,7 +48,7 @@ int main()
                 printf("Quantos alunos deseja cadastrar?");
                 scanf("%d", &quantidadeParaCadastro);
  
-                if(arrayEstaCheio > TAMANHO || quantidadeParaCadastro > TAMANHO){
+                if(arrayEstaCheio >= TAMANHO || quantidadeParaCadastro > TAMANHO){
                     printf("\nNão é possível cadastrar alunos\n");
                     break;
                 }
@@ -39,12 +56,12 @@ int main()
                 for (int i = 0; i < quantidadeParaCadastro; i++) {
                     setbuf(stdin, NULL);
                     printf("\nDigite o nome completo do aluno %d:", i+1);
-                    scanf("%[^\n]", strAluno[i].nome); 
+                    scanf("%[^\n]", strAluno[arrayCount].nome); 
                     printf("\nDigite a nota 1 do aluno: ");
-                    scanf("%f", &strAluno[i].nota1);
+                    scanf("%f", &strAluno[arrayCount].nota1);
                     printf("\nDigite a nota 2 do aluno: ");
-                    scanf("%f", &strAluno[i].nota2);
-
+                    scanf("%f", &strAluno[arrayCount].nota2);
+                    arrayCount += 1;
                     arrayEstaCheio += quantidadeParaCadastro;
                 }
                 break;
@@ -54,43 +71,38 @@ int main()
 
                 printf("\n>>>>Alunos cadastrados<<<<");
                 for (int i = 0; i < TAMANHO; i++) {
-                    if(strAluno[i].nome != 0){
-                    printf("\nAluno %d", i+1);
-                    printf("\nNome do aluno: %s", strAluno[i].nome);
-                    printf("\nNota 1 do aluno: %f", strAluno[i].nota1);
-                    printf("\nNota 2 do aluno: %f", strAluno[i].nota2);
-                    printf("\n--------------------------------------");
+                    if(strAluno[i].nota1 != 0){
+                        printf("\nAluno %d", i+1);
+                        printAluno(strAluno[i]);
+                        printf("\n--------------------------------------");
                     }
                 }
                 break;
             }
             
             case 3:{
-
-                char buscarAlunoPorNome[200];
+                setbuf(stdin, NULL);
                 printf("Digite o nome do aluno: ");
-                scanf("%s", buscarAlunoPorNome);
+                scanf("%[^\n]", buscarAlunoPorNome);
 
                 for (int i = 0; i < TAMANHO; i++){
-                    if(strAluno[i].nome == buscarAlunoPorNome){
-                        printf("\nNome do aluno: %s", strAluno[i].nome);
-                        printf("\nNota 1 do aluno: %f", strAluno[i].nota1);
-                        printf("\nNota 2 do aluno: %f", strAluno[i].nota2);
-                    }else{
-                        printf("\nAluno não encontrado");
+                    if(comparaStrings(strAluno[i].nome, buscarAlunoPorNome) == 1){
+                        printAluno(strAluno[i]);
+                        break;
                     }
                 }
                 break;
             }
 
             case 4:{
+                printf("Saindo do sistema");
                 condicao = false;
                 break;
-            }
-            
+            } 
         }
     }
 
     return 0;
 }
+
 
