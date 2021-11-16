@@ -5,6 +5,8 @@ struct aluno {
     char nome[200];
     float nota1;
     float nota2;
+    float mediaFinal;
+    bool situacao;
 }strAluno[3];
 
 int comparaStrings(char nomeUm[], char nomeDois[]){
@@ -21,8 +23,12 @@ int comparaStrings(char nomeUm[], char nomeDois[]){
 
 void printAluno(struct aluno a){
     printf("\nNome do aluno: %s", a.nome);
-    printf("\nNota 1 do aluno: %.2f", a.nota1);
-    printf("\nNota 2 do aluno: %.2f", a.nota2);
+    printf("\nNota 1 do aluno: %.1f", a.nota1);
+    printf("\nNota 2 do aluno: %.1f", a.nota2);
+    printf("\nMédia do aluno: %.1f", a.mediaFinal);
+    printf("\nSituação do aluno: ");
+    printf("%s", a.situacao ? "APROVADO" : "REPROVADO");
+    
 }
 
 int main()
@@ -31,6 +37,7 @@ int main()
     bool condicao = true;
     int valor, quantidadeParaCadastro, arrayEstaCheio = 0, arrayCount = 0;
     char buscarAlunoPorNome[200];
+    float media;
     
 
     while(condicao){
@@ -38,14 +45,15 @@ int main()
         printf("\n1-Cadastrar um novo estudante ");
         printf("\n2-Listar todos os dados dos estudantes cadastrados ");
         printf("\n3-Buscar aluno por nome");
-        printf("\n4-Sair\n");
+        printf("\n4-media");
+        printf("\n5-Sair\n");
         scanf("%d", &valor);
         
         switch(valor){
             
             case 1: {
                 
-                printf("Quantos alunos deseja cadastrar?");
+                printf("Quantos alunos deseja cadastrar?\n");
                 scanf("%d", &quantidadeParaCadastro);
  
                 if(arrayEstaCheio >= TAMANHO || quantidadeParaCadastro > TAMANHO){
@@ -55,12 +63,19 @@ int main()
 
                 for (int i = 0; i < quantidadeParaCadastro; i++) {
                     setbuf(stdin, NULL);
-                    printf("\nDigite o nome completo do aluno %d:", i+1);
+                    printf("\nDigite o nome completo do aluno %d: ", arrayCount + 1);
                     scanf("%[^\n]", strAluno[arrayCount].nome); 
                     printf("\nDigite a nota 1 do aluno: ");
                     scanf("%f", &strAluno[arrayCount].nota1);
                     printf("\nDigite a nota 2 do aluno: ");
                     scanf("%f", &strAluno[arrayCount].nota2);
+                    media = (strAluno[arrayCount].nota1 + strAluno[arrayCount].nota2)/2;
+                    strAluno[arrayCount].mediaFinal = media;
+                    if(strAluno[arrayCount].mediaFinal > 6){
+                        strAluno[arrayCount].situacao = true;
+                    }else{
+                        strAluno[arrayCount].situacao = false;
+                    }
                     arrayCount += 1;
                     arrayEstaCheio += quantidadeParaCadastro;
                 }
@@ -74,13 +89,13 @@ int main()
                     if(strAluno[i].nota1 != 0){
                         printf("\nAluno %d", i+1);
                         printAluno(strAluno[i]);
-                        printf("\n--------------------------------------");
+                        printf("\n------------------");
                     }
                 }
                 break;
             }
             
-            case 3:{
+            case 3: {
                 setbuf(stdin, NULL);
                 printf("Digite o nome do aluno: ");
                 scanf("%[^\n]", buscarAlunoPorNome);
@@ -94,8 +109,12 @@ int main()
                 break;
             }
 
-            case 4:{
-                printf("Saindo do sistema");
+            case 4: {
+                printf("Nota 1 --> %.2f", media);
+                break;
+            } 
+
+            case 5: {
                 condicao = false;
                 break;
             } 
