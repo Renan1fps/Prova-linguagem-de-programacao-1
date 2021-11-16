@@ -45,8 +45,10 @@ int main()
         printf("\n1-Cadastrar um novo estudante ");
         printf("\n2-Listar todos os dados dos estudantes cadastrados ");
         printf("\n3-Buscar aluno por nome");
-        printf("\n4-media");
-        printf("\n5-Sair\n");
+        printf("\n4-Alterar nota do estudante");
+        printf("\n5-Listar estudantes aprovados");
+        printf("\n6-Listar estudantes reprovados");
+        printf("\n8-Sair\n");
         scanf("%d", &valor);
         
         switch(valor){
@@ -96,6 +98,7 @@ int main()
             }
             
             case 3: {
+
                 setbuf(stdin, NULL);
                 printf("Digite o nome do aluno: ");
                 scanf("%[^\n]", buscarAlunoPorNome);
@@ -110,11 +113,56 @@ int main()
             }
 
             case 4: {
-                printf("Nota 1 --> %.2f", media);
+
+                setbuf(stdin, NULL);
+                printf("Digite o nome do aluno: ");
+                scanf("%[^\n]", buscarAlunoPorNome);
+                for (int i = 0; i < TAMANHO; i++){
+                    if(comparaStrings(strAluno[i].nome, buscarAlunoPorNome) == 1){
+                        printf("\nDigite a nota 1 do aluno: ");
+                        scanf("%f", &strAluno[i].nota1);
+                        printf("\nDigite a nota 2 do aluno: ");
+                        scanf("%f", &strAluno[i].nota2);
+                        float novaMedia = (strAluno[i].nota1 + strAluno[i].nota2)/2;
+                        strAluno[i].mediaFinal = novaMedia;
+                        if(strAluno[i].mediaFinal > 6){
+                        strAluno[i].situacao = true;
+                        }else{
+                            strAluno[i].situacao = false;
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+      
+
+
+            case 5: {
+
+                printf("\n>>>>Alunos Aprovados<<<<");
+                for (int i = 0; i < TAMANHO; i++){
+                    if(strAluno[i].situacao == 1){
+                        printAluno(strAluno[i]);
+                        printf("\n-----------------");
+                    }
+                }
                 break;
             } 
 
-            case 5: {
+            case 6: {
+
+                printf("\n>>>>Alunos Reprovados<<<<");
+                for (int i = 0; i < TAMANHO; i++){
+                    if(strAluno[i].situacao == 0){
+                        printAluno(strAluno[i]);
+                        printf("\n-----------------");
+                    }
+                }
+                break;
+            } 
+
+            case 8: {
                 condicao = false;
                 break;
             } 
@@ -123,5 +171,6 @@ int main()
 
     return 0;
 }
+
 
 
