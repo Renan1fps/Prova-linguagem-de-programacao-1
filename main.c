@@ -7,7 +7,7 @@ struct aluno {
     float nota2;
     float mediaFinal;
     bool situacao;
-}strAluno[3];
+}strAluno[30];
 
 int comparaStrings(char nomeUm[], char nomeDois[]){
     int i = 0;
